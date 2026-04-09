@@ -1,0 +1,64 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: tests\login.spec.js >> Login with valid credentials
+- Location: tests\login.spec.js:36:5
+
+# Error details
+
+```
+TypeError: _LoginPage.default is not a constructor
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | import LoginPage from '../pages/LoginPage';
+  3  | 
+  4  | test.beforeEach(async ({ page }) => {
+> 5  |   const loginPage = new LoginPage(page);
+     |                     ^ TypeError: _LoginPage.default is not a constructor
+  6  |   await loginPage.goto();
+  7  | });
+  8  | 
+  9  | test('Login with empty fields', async ({ page }) => {
+  10 |   const loginPage = new LoginPage(page);
+  11 | 
+  12 |   await loginPage.login('', '');
+  13 | 
+  14 |   await expect(await loginPage.getError()).toBeVisible();
+  15 |   await expect(await loginPage.getError()).toContainText('Username is required');
+  16 | });
+  17 | 
+  18 | test('Login with only username', async ({ page }) => {
+  19 |   const loginPage = new LoginPage(page);
+  20 | 
+  21 |   await loginPage.login('standard_user', '');
+  22 | 
+  23 |   await expect(await loginPage.getError()).toBeVisible();
+  24 |   await expect(await loginPage.getError()).toContainText('Password is required');
+  25 | });
+  26 | 
+  27 | test('Login with invalid credentials', async ({ page }) => {
+  28 |   const loginPage = new LoginPage(page);
+  29 | 
+  30 |   await loginPage.login('wrong_user', 'wrong_pass');
+  31 | 
+  32 |   await expect(await loginPage.getError()).toBeVisible();
+  33 |   await expect(await loginPage.getError()).toContainText('Username and password do not match');
+  34 | });
+  35 | 
+  36 | test('Login with valid credentials', async ({ page }) => {
+  37 |   const loginPage = new LoginPage(page);
+  38 | 
+  39 |   await loginPage.login('standard_user', 'secret_sauce');
+  40 | 
+  41 |   await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+  42 | });
+```
