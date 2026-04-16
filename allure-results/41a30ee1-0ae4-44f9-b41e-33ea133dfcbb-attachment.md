@@ -1,0 +1,76 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: tests\navigation\navigation.spec.ts >> Navigate to About page
+- Location: tests\navigation\navigation.spec.ts:42:5
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "https://www.saucedemo.com/", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | test.beforeEach(async ({ page }) => {
+> 4  |   await page.goto('https://www.saucedemo.com/');
+     |              ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  5  | 
+  6  |   // Login before navigation tests
+  7  |   await page.fill('#user-name', 'standard_user');
+  8  |   await page.fill('#password', 'secret_sauce');
+  9  |   await page.click('#login-button');
+  10 | });
+  11 | 
+  12 | test('Navigate to cart page', async ({ page }) => {
+  13 |   await page.click('.shopping_cart_link');
+  14 | 
+  15 |   await expect(page).toHaveURL(/cart/);
+  16 | });
+  17 | 
+  18 | test('Navigate back to inventory from cart', async ({ page }) => {
+  19 |   await page.click('.shopping_cart_link');
+  20 |   await page.click('#continue-shopping');
+  21 | 
+  22 |   await expect(page).toHaveURL(/inventory/);
+  23 | });
+  24 | 
+  25 | test('Open and close menu (sidebar navigation)', async ({ page }) => {
+  26 |   await page.click('#react-burger-menu-btn'); // open menu
+  27 | 
+  28 |   const menu = page.locator('.bm-menu');
+  29 |   await expect(menu).toBeVisible();
+  30 | 
+  31 |   await page.click('#react-burger-cross-btn'); // close menu
+  32 |   await expect(menu).not.toBeVisible();
+  33 | });
+  34 | 
+  35 | test('Logout from application', async ({ page }) => {
+  36 |   await page.click('#react-burger-menu-btn');
+  37 |   await page.click('#logout_sidebar_link');
+  38 | 
+  39 |   await expect(page).toHaveURL('https://www.saucedemo.com/');
+  40 | });
+  41 | 
+  42 | test('Navigate to About page', async ({ page }) => {
+  43 |   await page.click('#react-burger-menu-btn');
+  44 |   await page.click('#about_sidebar_link');
+  45 | 
+  46 |   await expect(page).toHaveURL(/saucelabs/);
+  47 | });
+```

@@ -1,0 +1,70 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: tests\navigation\navigation.spec.ts >> Open and close menu
+- Location: tests\navigation\navigation.spec.ts:25:5
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "https://www.saucedemo.com/", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | test.beforeEach(async ({ page }) => {
+> 4  |   await page.goto('https://www.saucedemo.com/');
+     |              ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  5  | 
+  6  |   await page.fill('[data-test="username"]', 'standard_user');
+  7  |   await page.fill('[data-test="password"]', 'secret_sauce');
+  8  |   await page.click('[data-test="login-button"]');
+  9  | 
+  10 |   await expect(page).toHaveURL(/inventory/);
+  11 | });
+  12 | 
+  13 | test('Navigate to cart page', async ({ page }) => {
+  14 |   await page.locator('.shopping_cart_link').click();
+  15 |   await expect(page).toHaveURL(/cart/);
+  16 | });
+  17 | 
+  18 | test('Navigate back to inventory', async ({ page }) => {
+  19 |   await page.locator('.shopping_cart_link').click();
+  20 |   await page.locator('[data-test="continue-shopping"]').click();
+  21 | 
+  22 |   await expect(page).toHaveURL(/inventory/);
+  23 | });
+  24 | 
+  25 | test('Open and close menu', async ({ page }) => {
+  26 |   await page.click('#react-burger-menu-btn');
+  27 | 
+  28 |   const menu = page.locator('.bm-menu');
+  29 |   await expect(menu).toBeVisible();
+  30 | 
+  31 |   await page.click('#react-burger-cross-btn');
+  32 |   await expect(menu).not.toBeVisible();
+  33 | });
+  34 | 
+  35 | test('Logout', async ({ page }) => {
+  36 |   await page.click('#react-burger-menu-btn');
+  37 |   await expect(page.locator('.bm-menu')).toBeVisible();
+  38 | 
+  39 |   await page.click('#logout_sidebar_link');
+  40 |   await expect(page).toHaveURL('https://www.saucedemo.com/');
+  41 | });
+```

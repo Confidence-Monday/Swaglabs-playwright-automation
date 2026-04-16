@@ -1,0 +1,72 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: tests\edgecase\edgecase.spec.ts >> Cart is empty by default
+- Location: tests\edgecase\edgecase.spec.ts:37:5
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "https://www.saucedemo.com/", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | test.beforeEach(async ({ page }) => {
+> 4  |   await page.goto('https://www.saucedemo.com/');
+     |              ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  5  | });
+  6  | 
+  7  | test('Login with empty fields', async ({ page }) => {
+  8  |   await page.click('[data-test="login-button"]');
+  9  | 
+  10 |   await expect(page.locator('[data-test="error"]')).toBeVisible();
+  11 | });
+  12 | 
+  13 | test('Login with only username', async ({ page }) => {
+  14 |   await page.fill('[data-test="username"]', 'standard_user');
+  15 |   await page.click('[data-test="login-button"]');
+  16 | 
+  17 |   await expect(page.locator('[data-test="error"]')).toBeVisible();
+  18 | });
+  19 | 
+  20 | test('Checkout with empty form', async ({ page }) => {
+  21 |   // Login first
+  22 |   await page.fill('[data-test="username"]', 'standard_user');
+  23 |   await page.fill('[data-test="password"]', 'secret_sauce');
+  24 |   await page.click('[data-test="login-button"]');
+  25 | 
+  26 |   // Go to checkout
+  27 |   await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
+  28 |   await page.click('.shopping_cart_link');
+  29 |   await page.click('[data-test="checkout"]');
+  30 | 
+  31 |   // Submit empty form
+  32 |   await page.click('[data-test="continue"]');
+  33 | 
+  34 |   await expect(page.locator('[data-test="error"]')).toBeVisible();
+  35 | });
+  36 | 
+  37 | test('Cart is empty by default', async ({ page }) => {
+  38 |   await page.fill('[data-test="username"]', 'standard_user');
+  39 |   await page.fill('[data-test="password"]', 'secret_sauce');
+  40 |   await page.click('[data-test="login-button"]');
+  41 | 
+  42 |   await expect(page.locator('.shopping_cart_badge')).toHaveCount(0);
+  43 | });
+```
