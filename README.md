@@ -4,7 +4,6 @@
 This project is an end-to-end test automation framework built using Playwright.  
 It automates login and form validation scenarios on the SauceDemo (Swag Labs) application.
 
-
 ## Tools Used
 - Visual Studio Code
 - Chrome DevTools
@@ -13,14 +12,22 @@ It automates login and form validation scenarios on the SauceDemo (Swag Labs) ap
 - Allure Reporting
 
 ## Project Structure
-- tests/ → Test scripts
+- github\workflow →
+  ├── playwright/
+- tests/ → 
+  ├── auth/
+  ├── inventory/
+  ├── cart/
+  ├── checkout/
+  ├── navigation/
+  └── edge-cases/
 - pages/ → Page Object Model classes
 - fixtures/ → Custom fixtures for reusable setup
 - test-data/ → Test data (optional)
 
-## Test Coverage
+## Test Coverage For Test Suites
 
-### Authentication
+## Authentication
 - Valid login
 - Invalid login
 - Empty fields
@@ -47,12 +54,6 @@ It automates login and form validation scenarios on the SauceDemo (Swag Labs) ap
 - All tests pass successfully.
 - Allure report is genrated in the report folder.
 - Report generated shows 0 failure.
-
-## Test Scenarios Covered
-- Login with empty fields
-- Login with missing password
-- Login with invalid credentials
-- Login with valid credentials
 
 ## How to Run Tests
 
