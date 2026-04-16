@@ -18,6 +18,30 @@ It automates login and form validation scenarios on the SauceDemo (Swag Labs) ap
 - fixtures/ → Custom fixtures for reusable setup
 - test-data/ → Test data (optional)
 
+## Test Coverage
+
+### Authentication
+- Valid login
+- Invalid login
+- Empty fields
+
+### Inventory
+- Products display
+
+### Cart
+- Add/remove items
+
+### Checkout
+- Complete purchase
+- Validation errors
+
+### Navigation
+- Page routing
+
+### Edge Cases
+- Empty checkout fields
+- Invalid actions
+
 ## Expected Results
 
 - All tests pass successfully.
