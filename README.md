@@ -13,14 +13,14 @@ It automates login and form validation scenarios on the SauceDemo (Swag Labs) ap
 
 ## Project Structure
 - github\workflow →
-  ├── playwright/
+   playwright/
 - tests/ → 
-  ├── auth/
-  ├── inventory/
-  ├── cart/
-  ├── checkout/
-  ├── navigation/
-  └── edge-cases/
+   auth/
+   inventory/
+   cart/
+   checkout/
+   navigation/
+   edge-cases/
 - pages/ → Page Object Model classes
 - fixtures/ → Custom fixtures for reusable setup
 - test-data/ → Test data (optional)
